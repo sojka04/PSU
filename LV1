@@ -1,1 +1,72 @@
+1___________
 
+def total_euro(sati, satnica): 
+    "Iznos zarade."
+    return sati * satnica
+
+try:
+    sati = float(input("Radni sati: "))
+    satnica = float(input("eura/h: "))
+
+
+    zarada = total_euro(sati ,satnica)
+
+
+    print(f"Ukupno: {zarada}  eura")
+except ValueError:
+    print("Molimo unesite vazece brojeve.")
+
+2____________
+
+
+try: 
+    ocjena = float(input("Unesite ocjenu: "))
+
+    if 0.0 <= ocjena <= 1.9:
+        if ocjena >= 0.9:
+            kategorija = "A"
+        elif ocjena >= 0.8:
+            kategorija = "B"
+        elif ocjena >= 0.7:
+            kategorija = "C"
+        elif ocjena >= 0.6:
+            kategorija = "D"
+        elif ocjena < 0.5:
+            kategorija = "F"
+
+
+        print(f"Kategorija: {kategorija}")
+    else:
+        print("Molimo unesite ocjenu izmedu 0.0 i 1.0")
+
+except ValueError:
+    print("Molimo unesite vazeci broj")
+
+
+3________________
+
+lista=[]
+while True:
+    try:
+        unos = input("Unesite broj ili 'done': ")
+        if unos.lower() == "done":     
+            break
+        broj = float(unos)
+        lista.append(broj)
+    except ValueError:
+        print("Pogresna vrijednost")
+
+
+if len(lista) == 0:
+    print("Lista je prazna.")
+else:
+    print("Brojeva uneseno: ", len(lista))
+    print("Srednja vrijednost: ", sum(lista) / len(lista))
+    print("Minimalna vrijednost: ", min(lista))
+    print("Maksimalna vrijednost: ", max(lista))
+
+    lista.sort()
+    print("Sortirana lista brojeva",lista)
+
+
+4____________________
