@@ -1,0 +1,49 @@
+import tensorflow as tf
+from tensorflow.keras.preprocessing import image
+import numpy as np
+import requests
+from io import BytesIO
+from PIL import Image
+import matplotlib.pyplot as plt
+
+# Učitajte prethodno trenirani model (pretpostavimo da je model spremljen kao 'model.h5')
+model = tf.keras.models.load_model('model.h5')
+
+# Funkcija za preuzimanje i pripremu slike
+def prepare_image(img_url):
+    # Preuzimanje slike s interneta
+    response = requests.get(img_url)
+    img = Image.open(BytesIO(response.content))
+
+    # Prikazivanje slike
+    plt.imshow(img)
+    plt.axis('off')
+    plt.show()
+
+    # Prethodna obrada slike (dimenzije moraju odgovarati onima koje model očekuje)
+    img = img.resize((32, 32))  # Promijenite dimenzije prema vašem modelu
+    img_array = np.array(img)
+
+    # Normalizacija slike (ako je potrebno)
+    img_array = img_array / 255.0  # Ako je model treniran s normaliziranim podacima
+
+    # Dodavanje dimenzije za batch (oblik [1, 32, 32, 3])
+    img_array = np.expand_dims(img_array, axis=0)
+    
+    return img_array
+
+# Funkcija za predviđanje prometnog znaka
+def predict_sign(img_url):
+    img_array = prepare_image(img_url)
+    predictions = model.predict(img_array)
+    
+    # Dobivanje indeksa klase s najvećom vjerojatnošću
+    predicted_class = np.argmax(predictions, axis=1)
+    
+    # Prikazivanje predviđanja
+    print(f"Predviđena klasa: {predicted_class[0]}")
+
+# URL slike koju želite klasificirati (promijenite ovo s pravim URL-om slike)
+img_url = 'URL_DO_SLIKE_PROMETNOG_ZNAKA'  # Npr. 'https://example.com/traffic_sign.jpg'
+
+predict_sign(img_url)
